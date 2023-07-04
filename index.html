@@ -5,7 +5,6 @@
         <style>
             body {
                 background-color: #ffffff;
-                background-image: url('background.png');
                 background-position: center;
                 background-size: cover;
 
@@ -65,8 +64,22 @@
                 </ul>
             </section>
             <section>
-                <p>Background art by <a href="https://www.tumblr.com/0000stuff">0000stuff</a></p>
+                <p>Background art by <a id="bg-credit">PLACEHOLDER</a></p>
             </section>
         </main>
+        <script>
+            var backgrounds = [
+                ['1.png', 'https://tumblr.com/0000stuff', '0000stuff'],
+                ['2.png', 'https://tumblr.com/0000stuff', '0000stuff'],
+                ['3.png', 'https://tumblr.com/0000stuff', '0000stuff'],
+                ['4.jpg', 'https://www.tumblr.com/jumpcat7', 'JumpCat']
+            ];
+
+            var background = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+            document.body.style.backgroundImage = `url(backgrounds/${background[0]})`;
+            var bg_credit = document.getElementById('bg-credit');
+            bg_credit.setAttribute('href', background[1]);
+            bg_credit.innerHTML = background[2];
+        </script>
     </body>
 </html>
