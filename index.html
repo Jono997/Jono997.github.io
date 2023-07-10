@@ -4,19 +4,27 @@
         <title>Jono99</title>
         <style>
             body {
-                background-color: #ffffff;
-                background-position: center;
-                background-size: cover;
-                background-attachment: fixed;
-
                 font-family: Calibri, 'Trebuchet MS', sans-serif;
                 display: flex;
                 min-height: 100vh;
                 margin: 0px;
             }
+            #background {
+                position: fixed;
+                width: 100vw;
+                height: 100vh;
+
+                background-position: center;
+                background-size: cover;
+
+                opacity: 0;
+                transition-property: opacity;
+                transition-duration: 1s;
+                transition-timing-function: ease-out;
+            }
             .main-wrapper {
                 display: block;
-                margin:auto;
+                margin: auto;
             }
             main {
                 margin-top: 2em;
@@ -52,6 +60,7 @@
         </style>
     </head>
     <body>
+        <div id="background"></div>
         <div class="main-wrapper">
             <main>
                 <h1>Jono99</h1>
@@ -90,18 +99,30 @@
             </main>
         </div>
         <script>
-            var backgrounds = [
-                ['1.png', 'https://tumblr.com/0000stuff', '0000stuff'],
-                ['2.png', 'https://tumblr.com/0000stuff', '0000stuff'],
-                ['3.png', 'https://tumblr.com/0000stuff', '0000stuff'],
-                ['4.jpg', 'https://www.tumblr.com/jumpcat7', 'JumpCat']
-            ];
+            (async function()
+            {
+                var backgrounds = [
+                    ['1.png', 'https://tumblr.com/0000stuff', '0000stuff'],
+                    ['2.png', 'https://tumblr.com/0000stuff', '0000stuff'],
+                    ['3.png', 'https://tumblr.com/0000stuff', '0000stuff'],
+                    ['4.jpg', 'https://www.tumblr.com/jumpcat7', 'JumpCat']
+                ];
+    
+                var background = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+                var bg_element = document.getElementById('background');
+                var bg_path = `backgrounds/${background[0]}`;
+                bg_element.style.backgroundImage = `url(${bg_path})`;
+                var bg_credit = document.getElementById('bg-credit');
+                bg_credit.setAttribute('href', background[1]);
+                bg_credit.innerHTML = background[2];
 
-            var background = backgrounds[Math.floor(Math.random() * backgrounds.length)];
-            document.body.style.backgroundImage = `url(backgrounds/${background[0]})`;
-            var bg_credit = document.getElementById('bg-credit');
-            bg_credit.setAttribute('href', background[1]);
-            bg_credit.innerHTML = background[2];
+                var img = new Image();
+                img.onload = function()
+                {
+                    bg_element.style.opacity = 1;
+                };
+                img.src = bg_path;
+            })();
         </script>
     </body>
 </html>
