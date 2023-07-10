@@ -27,9 +27,6 @@
                 margin: auto;
             }
             main {
-                margin-top: 2em;
-                margin-bottom: 2em;
-
                 background-color: #ffffffbf;
                 backdrop-filter: blur(5px);
                 padding: 1em;
@@ -38,6 +35,10 @@
                 animation-name: main-fly-in;
                 animation-duration: 1s;
                 animation-timing-function: ease-out;
+            }
+            main.vert-margins {
+                margin-top: 2em;
+                margin-bottom: 2em;
             }
             h1 {
                 margin-top: 0px;
@@ -99,8 +100,8 @@
             </main>
         </div>
         <script>
-            (async function()
-            {
+            // Add background
+            (function() {
                 var backgrounds = [
                     ['1.png', 'https://tumblr.com/0000stuff', '0000stuff'],
                     ['2.png', 'https://tumblr.com/0000stuff', '0000stuff'],
@@ -123,6 +124,15 @@
                 };
                 img.src = bg_path;
             })();
+        
+            // Add top/bottom margins to main if needed
+            window.addEventListener('resize', function() {
+                var main = document.getElementsByTagName('main')[0];
+                if (main.clientHeight > document.body.parentElement.clientHeight)
+                    main.classList.add('vert-margins');
+                else
+                    main.classList.remove('vert-margins');
+            });
         </script>
     </body>
 </html>
