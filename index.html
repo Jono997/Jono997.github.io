@@ -24,8 +24,6 @@
                 background-size: cover;
 
                 opacity: 0;
-                transition-property: opacity;
-                transition-duration: 1.5s;
             }
             .main-wrapper {
                 display: block;
@@ -106,36 +104,12 @@
                 </section>
                 <section>
                     <p>Background art by <a id="bg-credit">PLACEHOLDER</a></p>
+                    <button id="change_bg_button">Change background</button>
                 </section>
             </main>
         </div>
+        <script src="background.js"></script>
         <script>
-            // Add background
-            (function() {
-                var backgrounds = [
-                    ['1.png', 'https://tumblr.com/0000stuff', '0000stuff'],
-                    ['2.png', 'https://tumblr.com/0000stuff', '0000stuff'],
-                    ['3.png', 'https://tumblr.com/0000stuff', '0000stuff'],
-                    ['4.jpg', 'https://tumblr.com/jumpcat7', 'JumpCat'],
-                    ['5.png', 'https://twitter.com/kelinci_bukit', 'kris']
-                ];
-    
-                var background = backgrounds[Math.floor(Math.random() * backgrounds.length)];
-                var bg_element = document.getElementById('background');
-                var bg_path = `backgrounds/${background[0]}`;
-                bg_element.style.backgroundImage = `url(${bg_path})`;
-                var bg_credit = document.getElementById('bg-credit');
-                bg_credit.setAttribute('href', background[1]);
-                bg_credit.innerHTML = background[2];
-
-                var img = new Image();
-                img.onload = function()
-                {
-                    bg_element.style.opacity = 1;
-                };
-                img.src = bg_path;
-            })();
-        
             // Add top/bottom margins to main if needed
             window.addEventListener('resize', function() {
                 var main = document.getElementsByTagName('main')[0];
