@@ -3,68 +3,12 @@
     <head>
         <title>Jono99</title>
         <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <link rel="stylesheet" href="common.css">
         <meta content="Jono99's personal whybsite" property="og:title" />
         <meta content="Alright, who let the dog use Github Pages?" property="og:description" />
         <meta content="https://jono997.github.io" property="og:url" />
         <meta content="https://jono997.github.io/icon.png" property="og:image" />
         <meta content="#995f4a" data-react-helmet="true" name="theme-color" />
-        <style>
-            body {
-                font-family: Calibri, 'Trebuchet MS', sans-serif;
-                display: flex;
-                min-height: 100vh;
-                margin: 0px;
-            }
-            #background {
-                position: fixed;
-                width: 100vw;
-                height: 100vh;
-
-                background-position: center;
-                background-size: cover;
-
-                opacity: 0;
-            }
-            .main-wrapper {
-                display: block;
-                margin: auto;
-            }
-            main {
-                background-color: #ffffffbf;
-                backdrop-filter: blur(5px);
-                padding: 1em;
-                border-radius: 2em;
-                opacity: 0;
-
-                animation-name: main-fly-in;
-                animation-duration: 1s;
-                animation-delay: 0.5s;
-                animation-timing-function: ease-out;
-                animation-fill-mode: forwards;
-            }
-            main.vert-margins {
-                margin-top: 2em;
-                margin-bottom: 2em;
-            }
-            h1 {
-                margin-top: 0px;
-                text-align: center;
-            }
-            section {
-                border-top: 0.1em solid black;
-            }
-
-            @keyframes main-fly-in {
-                from {
-                    opacity: 0;
-                    transform: translateY(3em);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0em);
-                }
-            }
-        </style>
     </head>
     <body>
         <div id="background"></div>
@@ -108,16 +52,6 @@
                 </section>
             </main>
         </div>
-        <script src="background.js"></script>
-        <script>
-            // Add top/bottom margins to main if needed
-            window.addEventListener('resize', function() {
-                var main = document.getElementsByTagName('main')[0];
-                if (main.clientHeight > document.body.parentElement.clientHeight)
-                    main.classList.add('vert-margins');
-                else
-                    main.classList.remove('vert-margins');
-            });
-        </script>
+        <script src="common.js"></script>
     </body>
 </html>

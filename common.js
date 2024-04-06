@@ -1,7 +1,4 @@
-window.current_background = undefined;
-
 window.change_backround = function() {
-    debugger;
     var backgrounds = [
         ['1.png', 'https://tumblr.com/0000stuff', '0000stuff'],
         ['2.png', 'https://tumblr.com/0000stuff', '0000stuff'],
@@ -32,8 +29,19 @@ window.change_backround = function() {
     img.src = bg_path;
 };
 
+// Set the background and setup the change background button
+window.current_background = undefined;
 (function() {
     var change_bg_button = document.getElementById("change_bg_button");
     change_bg_button.addEventListener("click", change_backround);
 })();
 change_backround();
+
+// Add top/bottom margins to main if needed
+window.addEventListener('resize', function() {
+    var main = document.getElementsByTagName('main')[0];
+    if (main.clientHeight > document.body.parentElement.clientHeight)
+        main.classList.add('vert-margins');
+    else
+        main.classList.remove('vert-margins');
+});
