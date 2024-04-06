@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Jono99</title>
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <link rel="stylesheet" href="common.css">
+        <meta content="Jono99's personal whybsite" property="og:title" />
+        <meta content="Alright, who let the dog use Github Pages?" property="og:description" />
+        <meta content="https://jono997.github.io" property="og:url" />
+        <meta content="https://jono997.github.io/icon.png" property="og:image" />
+        <meta content="#995f4a" data-react-helmet="true" name="theme-color" />
+        <style>
+            .bg-option:has(span) {
+                margin: 1em;
+            }
+            .bg-option span {
+                display: block;
+                background-size: cover;
+                background-position: center;
+                width: 20vw;
+                height: 20vh;
+                cursor: pointer;
+
+                transition-property: height;
+                transition-duration: 1s;
+                transition-timing-function: ease-out;
+            }
+            .bg-option span:hover {
+                height: var(--full-height, 20vh);
+            }
+            .bg-option span.checked {
+                animation-name: select-pulse;
+                animation-duration: 1s;
+                animation-timing-function: ease-out;
+                animation-fill-mode: forwards;
+            }
+
+            @keyframes select-pulse {
+                from{
+                    box-shadow: inset 0 0 1em 1em #8ca9ff;
+                }
+                to {
+                    box-shadow: inset 0 0 1em 0.5em #8ca9ff;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="background"></div>
+        <div class="main-wrapper">
+            <main>
+                <h1>Settings</h1>
+                <section>
+                    <h2>Background</h2>
+                    <div id="background-options" class="flexbox">
+                    </div>
+                </section>
+                <section>
+                    <a href="index.html">Exit</a>
+                </section>
+            </main>
+        </div>
+        <script src="common.js"></script>
+        <script>
+            // Setup background options
+            (function()
+            {
+                var set_background = function(bg) {
+                    document.cookie = `background=${bg}`;
+                    change_background();
+                };
+
+                var on_option_select = function(op) {
+                    set_background(op.index);
+                    for (bg_option of options_container.children)
+                    {
+                        var radio = bg_option.children[0];
+                        if (radio !== op)
+                        {
+                            radio.checked = false;
+                            radio.classList.remove('checked');
+                        }
+                    }
+                };
+                
+                var create_background_option = function(i) {
+                    var background;
+                    if (i == -1)
+                        background = ['rand.png', '', '', 'Random'];
+                    else
+                        background = backgrounds[i];
+
+                    var option = document.createElement('div');
+                    options_container.appendChild(option);
+
+                    var selector = document.createElement('input');
+                    selector.type = 'radio';
+                    selector.index = i;
+                    selector.checked = (i === user_bg);
+                    selector.addEventListener('change', function()
+                    {
+                        if (this.checked)
+                        {
+                            on_option_select(this);
+                        }
+                    });
+                    option.appendChild(selector);
+                    option.append(background[3]);
+
+                    var img = new Image();
+                    img.parent = option;
+                    img.info = background;
+                    img.index = i;
+                    img.onload = function()
+                    {
+                        var op_image = document.createElement('span');
+                        op_image.style.backgroundImage = `url(${this.src})`;
+                        
+                        var img_scale = (document.body.parentElement.clientWidth * 0.2) / this.width;
+                        var full_height = this.height * img_scale;
+                        op_image.style.setProperty('--full-height', `${full_height}px`);
+
+                        op_image.index = this.index;
+                        op_image.checked = (this.index === user_bg);
+                        if (op_image.checked)
+                            op_image.classList.add('checked');
+                        op_image.addEventListener('click', function()
+                        {
+                            this.classList.add('checked');
+                            on_option_select(this);
+                        });
+
+                        var op_name = document.createElement('p');
+                        op_name.innerHTML = this.info[3];
+
+                        this.parent.innerHTML = '';
+                        this.parent.appendChild(op_image);
+                        this.parent.appendChild(op_name);
+                        this.parent.classList.add('bg-option');
+                    };
+                    img.src = `backgrounds/${background[0]}`;
+                }
+
+                var user_bg = get_user_background();
+
+                var options_container = document.getElementById('background-options');
+                for (var i = -1; i < backgrounds.length; i++)
+                    create_background_option(i);
+            })();
+        </script>
+    </body>
+</html>
