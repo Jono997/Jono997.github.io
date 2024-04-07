@@ -68,6 +68,7 @@ new ResizeObserver(function() {
 
 window.apply_theme = function(theme) {
     document.body.style.setProperty('--text-colour', `var(--${theme}-text-colour)`);
+    document.body.style.setProperty('--link-colour', `var(--${theme}-link-colour)`);
     document.body.style.setProperty('--background-colour', `var(--${theme}-background-colour)`);
 };
 

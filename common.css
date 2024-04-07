@@ -1,23 +1,29 @@
 :root {
     --light-text-colour: black;
+    --light-link-colour: #4b48f1;
     --light-background-colour: 255 255 255;
     --dark-text-colour: white;
+    --dark-link-colour: #9d9cfd;
     --dark-background-colour: 0 0 0;
     --solarl-text-colour: #002b36;
+    --solarl-link-colour: #268bd2;
     --solarl-background-colour: 253 246 227;
     --solard-text-colour: #fdf6e3;
+    --solard-link-colour: #268bd2;
     --solard-background-colour: 0 43 54;
 }
 body {
     --text-colour: var(--light-text-colour);
+    --link-colour: var(--light-link-colour);
     --background-colour: var(--light-background-colour);
+    color: var(--text-colour);
     font-family: Calibri, 'Trebuchet MS', sans-serif;
     display: flex;
     min-height: 100vh;
     margin: 0px;
 }
-body, a {
-    color: var(--text-colour);
+a {
+    color: var(--link-colour);
 }
 #background {
     position: fixed;
