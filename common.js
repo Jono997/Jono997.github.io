@@ -51,10 +51,10 @@ window.current_background = undefined;
 change_background();
 
 // Add top/bottom margins to main if needed
-window.addEventListener('resize', function() {
-    var main = document.getElementsByTagName('main')[0];
+var main = document.getElementsByTagName('main')[0];
+new ResizeObserver(function() {
     if (main.clientHeight > document.body.parentElement.clientHeight)
         main.classList.add('vert-margins');
     else
         main.classList.remove('vert-margins');
-});
+}).observe(main);
