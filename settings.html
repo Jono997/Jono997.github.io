@@ -30,9 +30,12 @@
             }
             .bg-option span.checked {
                 animation-name: select-pulse;
-                animation-duration: 1s;
+                animation-duration: 0.5s;
                 animation-timing-function: ease-out;
                 animation-fill-mode: forwards;
+            }
+            .bg-option p {
+                text-align: center;
             }
 
             @keyframes select-pulse {
@@ -82,6 +85,17 @@
                         }
                     }
                 };
+
+                var calculate_max_height = function(op_image, img_width, img_height) {
+                    if ((document.body.parentElement.clientWidth / document.body.parentElement.clientHeight) > (img_width / img_height))
+                    {
+                        var img_scale = (document.body.parentElement.clientWidth * 0.2) / img_width;
+                        var full_height = img_height * img_scale;
+                        op_image.style.setProperty('--full-height', `${full_height}px`);
+                    }
+                    else
+                        op_image.style.removeProperty('--full-height');
+                };
                 
                 var create_background_option = function(i) {
                     var background;
@@ -116,9 +130,15 @@
                         var op_image = document.createElement('span');
                         op_image.style.backgroundImage = `url(${this.src})`;
                         
-                        var img_scale = (document.body.parentElement.clientWidth * 0.2) / this.width;
-                        var full_height = this.height * img_scale;
-                        op_image.style.setProperty('--full-height', `${full_height}px`);
+                        if (this.index >= 0)
+                        {
+                            calculate_max_height(op_image, this.width, this.height);
+                            window.addEventListener('resize', (function(op_image, width, height) {
+                                return function() {
+                                    calculate_max_height(op_image, width, height);
+                                };
+                            })(op_image, this.width, this.height));
+                        }
 
                         op_image.index = this.index;
                         op_image.checked = (this.index === user_bg);

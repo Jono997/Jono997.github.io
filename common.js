@@ -1,9 +1,9 @@
 window.backgrounds = [
-    ['1.png', 'https://tumblr.com/0000stuff', '0000stuff', 'Welcome to the library'],
-    ['2.png', 'https://tumblr.com/0000stuff', '0000stuff', 'Wandering thoughts'],
-    ['3.png', 'https://tumblr.com/0000stuff', '0000stuff', 'Before summer ends'],
-    ['4.jpg', 'https://tumblr.com/jumpcat7', 'JumpCat', 'Hard at work'],
-    ['5.png', 'https://twitter.com/kelinci_bukit', 'kris', 'Idle time']
+    ['1.png', 'https://tumblr.com/0000stuff', '0000stuff', 'Welcome to the Library'],
+    ['2.png', 'https://tumblr.com/0000stuff', '0000stuff', 'Wandering Thoughts'],
+    ['3.png', 'https://tumblr.com/0000stuff', '0000stuff', 'Before Summer Ends'],
+    ['4.jpg', 'https://tumblr.com/jumpcat7', 'JumpCat', 'Hard At Work'],
+    ['5.png', 'https://twitter.com/kelinci_bukit', 'kris', 'Idle Time']
 ];
 
 window.get_user_background = function() {
