@@ -10,6 +10,7 @@
         <meta content="https://jono997.github.io/icon.png" property="og:image" />
         <meta content="#995f4a" data-react-helmet="true" name="theme-color" />
         <style>
+            /* Background changer */
             .bg-option:has(span) {
                 margin: 1em;
             }
@@ -47,6 +48,29 @@
                 }
             }
         </style>
+        <style>
+            /* Theme changer */ 
+            main, a {
+                transition-property: color, background-color;
+                transition-duration: 0.5s;
+            }
+            .theme-option {
+                display: block;
+                margin-bottom: 1em;
+                padding: 1em;
+                padding-inline: 1.5em;
+                box-shadow: inset 0 0 0 0.25em var(--text-colour);
+                color: var(--text-colour);
+                cursor: pointer;
+
+                transition-property: box-shadow;
+                transition-duration: 0.5s;
+                transition-timing-function: ease-out;
+            }
+            .theme-option:hover, .theme-option.selected {
+                box-shadow: inset 0 0 0 0.5em var(--text-colour);
+            }
+        </style>
     </head>
     <body>
         <div id="background"></div>
@@ -56,6 +80,15 @@
                 <section>
                     <h2>Background</h2>
                     <div id="background-options" class="flexbox">
+                    </div>
+                </section>
+                <section>
+                    <h2>Theme</h2>
+                    <div id="theme-options" class="flexbox">
+                        <a class="theme-option" theme="light">Light</a>
+                        <a class="theme-option" theme="dark">Dark</a>
+                        <a class="theme-option" theme="solarl">Solarised Light</a>
+                        <a class="theme-option" theme="solard">Solarised Dark</a>
                     </div>
                 </section>
                 <section>
@@ -166,6 +199,43 @@
                 var options_container = document.getElementById('background-options');
                 for (var i = -1; i < backgrounds.length; i++)
                     create_background_option(i);
+            })();
+            
+            // Setup theme changing
+            (function() {
+                var set_theme = function(theme)
+                {
+                    document.cookie = `theme=${theme}`;
+                    for (option of theme_options.children)
+                        option.classList.remove('selected');
+                };
+
+                var theme_options = document.getElementById('theme-options');
+                var user_theme = get_user_theme();
+                for (option of theme_options.children)
+                {
+                    var theme = option.getAttribute('theme');
+                    option.style.setProperty('--text-colour', `var(--${theme}-text-colour)`);
+                    option.style.background = `rgb(var(--${theme}-background-colour))`;
+                    if (theme === user_theme)
+                        option.classList.add('selected');
+                    option.addEventListener('click', function() {
+                        set_theme(this.getAttribute('theme'));
+                        this.style.transitionDuration = '0s';
+                        this.classList.add('selected');
+                        this.style.boxShadow = 'inset 0 0 0 1em var(--text-colour)';
+                        setTimeout(function(e) {
+                            e.style.transitionDuration = null;
+                            e.style.boxShadow = null;
+                        }, 1, this);
+                    });
+                    option.addEventListener('mouseover', function() {
+                        apply_theme(this.getAttribute('theme'));
+                    });
+                    option.addEventListener('mouseout', function() {
+                        apply_theme(get_user_theme());
+                    });
+                }
             })();
         </script>
     </body>

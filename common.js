@@ -13,6 +13,13 @@ window.get_user_background = function() {
     return Number(user_bg[1]);
 }
 
+window.get_user_theme = function() {
+    var user_theme = document.cookie.match(/theme=(\w+)/);
+    if (user_theme === null)
+        return 'light';
+    return user_theme[1];
+}
+
 window.change_background = function() {
     // Select background based on user preference
     var user_bg = get_user_background();
@@ -58,3 +65,10 @@ new ResizeObserver(function() {
     else
         main.classList.remove('vert-margins');
 }).observe(main);
+
+window.apply_theme = function(theme) {
+    document.body.style.setProperty('--text-colour', `var(--${theme}-text-colour)`);
+    document.body.style.setProperty('--background-colour', `var(--${theme}-background-colour)`);
+};
+
+apply_theme(get_user_theme());
