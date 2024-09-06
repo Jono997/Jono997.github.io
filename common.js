@@ -3,7 +3,8 @@ window.backgrounds = [
     ['2.png', 'https://tumblr.com/0000stuff', '0000stuff', 'Wandering Thoughts'],
     ['3.png', 'https://tumblr.com/0000stuff', '0000stuff', 'Before Summer Ends'],
     ['4.jpg', 'https://tumblr.com/jumpcat7', 'JumpCat', 'Hard At Work'],
-    ['5.png', 'https://twitter.com/kelinci_bukit', 'kris', 'Idle Time']
+    ['5.png', 'https://twitter.com/kelinci_bukit', 'kris', 'Idle Time'],
+    ['6.png', 'https://www.pixiv.net/en/artworks/122049997', 'Transendium', 'metathesis']
 ];
 
 window.get_user_background = function() {
