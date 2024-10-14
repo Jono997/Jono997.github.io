@@ -1,3 +1,5 @@
+window.background_path_prefix = "backgrounds/";
+
 window.backgrounds = [
     ['1.png', 'https://tumblr.com/0000stuff', '0000stuff', 'Welcome to the Library'],
     ['2.png', 'https://tumblr.com/0000stuff', '0000stuff', 'Wandering Thoughts'],
@@ -34,7 +36,7 @@ window.change_background = function() {
     // Apply background
     current_background = background[0];
     var bg_element = document.getElementById('background');
-    var bg_path = `backgrounds/${background[0]}`;
+    var bg_path = background_path_prefix + background[0];
     bg_element.style.backgroundImage = `url(${bg_path})`;
     var bg_credit = document.getElementById('bg-credit');
     if (bg_credit !== null)
