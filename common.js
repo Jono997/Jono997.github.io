@@ -7,7 +7,9 @@ window.backgrounds = [
     ['4.jpg', 'https://tumblr.com/jumpcat7', 'JumpCat', 'Hard At Work'],
     ['5.png', 'https://twitter.com/kelinci_bukit', 'kris', 'Idle Time'],
     ['6.png', 'https://www.pixiv.net/en/artworks/122049997', 'Transendium', 'metathesis'],
-    ['7.png', 'https://www.twitter.com/yukiyons', 'Komiya Meiko', 'Late Night Reading']
+    ['7.png', 'https://www.twitter.com/yukiyons', 'Komiya Meiko', 'Late Night Reading'],
+    ['8.png', 'https://zevsart.com', 'Zev Ross', 'Moongazer'],
+    ['9.png', 'https://xcancel.com/rioichikarihazi', 'Rioichi Karihazi', 'The Floof Scale']
 ];
 
 window.get_user_background = function() {
