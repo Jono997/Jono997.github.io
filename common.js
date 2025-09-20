@@ -1,15 +1,16 @@
 window.background_path_prefix = "backgrounds/";
 
 window.backgrounds = [
-    ['1.png', 'https://tumblr.com/0000stuff', '0000stuff', 'Welcome to the Library'],
-    ['2.png', 'https://tumblr.com/0000stuff', '0000stuff', 'Wandering Thoughts'],
-    ['3.png', 'https://tumblr.com/0000stuff', '0000stuff', 'Before Summer Ends'],
-    ['4.jpg', 'https://tumblr.com/jumpcat7', 'JumpCat', 'Hard At Work'],
-    ['5.png', 'https://twitter.com/kelinci_bukit', 'kris', 'Idle Time'],
-    ['6.png', 'https://www.pixiv.net/en/artworks/122049997', 'Transendium', 'metathesis'],
-    ['7.png', 'https://www.twitter.com/yukiyons', 'Komiya Meiko', 'Late Night Reading'],
-    ['8.png', 'https://zevsart.com', 'Zev Ross', 'Moongazer'],
-    ['9.png', 'https://xcancel.com/rioichikarihazi', 'Rioichi Karihazi', 'The Floof Scale']
+    // [filename, artist link, artist name, background name, allowed themes (1 = light, 2 = dark, 3 = both)]
+    ['1.png', 'https://tumblr.com/0000stuff', '0000stuff', 'Welcome to the Library', 3],
+    ['2.png', 'https://tumblr.com/0000stuff', '0000stuff', 'Wandering Thoughts', 1],
+    ['3.png', 'https://tumblr.com/0000stuff', '0000stuff', 'Before Summer Ends', 1],
+    ['4.jpg', 'https://tumblr.com/jumpcat7', 'JumpCat', 'Hard At Work', 3],
+    ['5.png', 'https://twitter.com/kelinci_bukit', 'kris', 'Idle Time', 3],
+    ['6.png', 'https://www.pixiv.net/en/artworks/122049997', 'Transendium', 'metathesis', 2],
+    ['7.png', 'https://www.twitter.com/yukiyons', 'Komiya Meiko', 'Late Night Reading', 3],
+    ['8.png', 'https://zevsart.com', 'Zev Ross', 'Moongazer', 2],
+    ['9.png', 'https://xcancel.com/rioichikarihazi', 'Rioichi Karihazi', 'The Floof Scale', 3]
 ];
 
 window.get_user_background = function() {
@@ -31,8 +32,23 @@ window.change_background = function() {
     var user_bg = get_user_background();
     var background = undefined;
     if (user_bg === -1)
-        while (background === undefined || background[0] === current_background)
+    {
+        var user_theme = get_user_theme();
+        var user_theme_type = 3;
+        switch (user_theme)
+        {
+            case 'light':
+            case 'solarl':
+                user_theme_type = 1;
+            break;
+            case 'dark':
+            case 'solard':
+                user_theme_type = 2;
+            break;
+        }
+        while (background === undefined || background[0] === current_background || (background[4] & user_theme_type == 0))
             background = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    }
     else
         background = backgrounds[user_bg];
 
