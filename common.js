@@ -46,7 +46,8 @@ window.change_background = function() {
                 user_theme_type = 2;
             break;
         }
-        while (background === undefined || background[0] === current_background || (background[4] & user_theme_type == 0))
+        background = backgrounds[5];
+        while (background === undefined || background[0] === current_background || (background[4] & user_theme_type) === 0)
             background = backgrounds[Math.floor(Math.random() * backgrounds.length)];
     }
     else
