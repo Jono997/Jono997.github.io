@@ -184,11 +184,16 @@
                         });
 
                         var op_name = document.createElement('p');
-                        op_name.innerHTML = this.info[3];
+                        op_name.innerHTML = `${this.info[3]}<br />`;
+
+                        var op_artist = document.createElement('a');
+                        op_artist.href = this.info[1];
+                        op_artist.innerHTML = this.info[2];
 
                         this.parent.innerHTML = '';
                         this.parent.appendChild(op_image);
                         this.parent.appendChild(op_name);
+                        op_name.appendChild(op_artist);
                         this.parent.classList.add('bg-option');
                     };
                     img.src = `backgrounds/${background[0]}`;
