@@ -1,0 +1,60 @@
+<!doctype HTML>
+<html>
+    <head>
+        <title>Jono99 - 404</title>
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <link rel="stylesheet" href="common.css">
+        <meta content="Jono99" property="og:title" />
+        <meta content="This page doesn't exist" property="og:description" />
+        <meta content="https://jono997.github.io" property="og:url" />
+        <meta content="https://jono997.github.io/icon.png" property="og:image" />
+        <meta content="#995f4a" data-react-helmet="true" name="theme-color" />
+    </head>
+    <body>
+        <div id="background"></div>
+        <div class="main-wrapper">
+            <main>
+                <h2 id="404-message"></h2>
+                It seems you've navigated to a page that doesn't exist. Double-check the URL or wait for me to make this one.
+                <a href="https://jono997.github.io">Return to the front page</a>
+            </main>
+        </div>
+        <script src="common.js"></script>
+        <script>
+            var messages = {
+                "normal": [
+                    "Sorry, this page doesn't exist.",
+                    "404 - Page not found.",
+                    "Page could not be located."
+                ],
+                
+                "ominous": [
+                    "Your footsteps vanish into the trees...",
+                    "The questions you ask go unanswered...",
+                    "The forest cannot answer you, it has no ears...",
+                    "The breath of your question sinks beneath the waves...",
+                    "Be careful what you ask. You never know what's listening."
+                ],
+                
+                "comedic": [
+                    "What are you on about?",
+                    "Normal 404 error message",
+                    "Sorry, I looked everywhere.",
+                    "This is why you don't freehand type URLs, Jeff!"
+                ]
+            };
+
+            var message_category = Math.random();
+            if (message_category <= 0.5)
+                message_category = messages.normal;
+            else if (message_category <= 0.75) 
+                message_category = messages.ominous;
+            else
+                message_category = messages.comedic;
+
+            var message = message_category[Math.floor(Math.random() * message_category.length)];
+            var message_element = document.getElementById('404-message');
+            message_element.innerHTML = message;
+        </script>
+    </body>
+</html>
