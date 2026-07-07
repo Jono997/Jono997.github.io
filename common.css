@@ -1,0 +1,78 @@
+:root {
+    --theme-width: 90%;
+    --theme-bg-colour: 255 255 255;
+    --theme-bg-opacity: 75%;
+    --theme-text-colour: 0 0 0;
+    --theme-font-size: 16px;
+}
+
+
+
+
+
+
+body {
+    display: flex;
+    margin: 0px;
+    height: 100vh;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+    font-size: var(--theme-font-size);
+    background-image: url("assets/bg/1.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    color: rgb(var(--theme-text-colour));
+}
+
+main {
+    display: block;
+    width: var(--theme-width, 90%);
+    margin: auto;
+    background-color: rgb(var(--theme-bg-colour) / var(--theme-bg-opacity));
+    border-radius: 2em;
+    padding: 0.5em;
+    backdrop-filter: blur(5px);
+}
+
+#settings-button {
+    position: fixed;
+    display: block;
+    right: 1em;
+    top: 1em;
+    width: 3em;
+    height: 3em;
+    background-color: rgb(var(--theme-bg-colour) / var(--theme-bg-opacity));
+    color: rgb(var(--theme-text-colour));
+    backdrop-filter: blur(10px);
+    transition-property: color, background-color;
+    transition-duration: 0.5s;
+    cursor: pointer;
+}
+
+#settings-button:hover {
+    background-color: rgb(var(--theme-text-colour) / var(--theme-bg-opacity));
+    color: rgb(var(--theme-bg-colour));
+}
+
+#settings-menu-container {
+    --settings-menu-width: 25%;
+    --settings-menu-padding: 0.5em;
+    position: fixed;
+    display: block;
+    right: calc(var(--settings-menu-width) * -1 - var(--settings-menu-padding) * 2);
+    top: 0px;
+    width: var(--settings-menu-width);
+    height: 100vh;
+    background: rgb(var(--theme-bg-colour) / var(--theme-bg-opacity));
+    backdrop-filter: blur(10px);
+    transition-property: right;
+    transition-duration: 0.5s;
+    transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1); /* Quart out */
+    padding-left: var(--settings-menu-padding);
+    padding-right: var(--settings-menu-padding);
+}
+
+#settings-container.open #settings-menu-container {
+    right: 0%;
+}
