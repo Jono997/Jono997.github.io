@@ -17,7 +17,7 @@ body {
     height: 100vh;
     font-family: Calibri, 'Trebuchet MS', sans-serif;
     font-size: var(--theme-font-size);
-    background-image: url("assets/bg/1.png");
+    background-image: url("assets/bg/4.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -33,6 +33,49 @@ main {
     border-radius: 2em;
     padding: 0.5em;
     backdrop-filter: blur(5px);
+}
+
+.dropdown {
+    width: 100%;
+    position: relative;
+}
+
+.dropdown-button {
+    border: rgb(var(--theme-text-colour)) solid 1px;
+    display: block;
+    padding: 0.25em;
+    background: rgb(var(--theme-bg-colour));
+}
+
+.dropdown-button::after {
+    content: "▼";
+    float: right;
+    border-left: rgb(var(--theme-text-colour)) solid 1px;
+}
+
+.dropdown .dropdown-options {
+    display: none;
+    position: absolute;
+    background: rgb(var(--theme-bg-colour) / 75%);
+    width: calc(100% - 2px);
+    backdrop-filter: blur(10px);
+    border: solid rgb(var(--theme-text-colour)) 1px;
+    border-top: none;
+}
+
+.dropdown.active .dropdown-options {
+    display: block;
+}
+
+.dropdown .dropdown-options * {
+    padding: 0.25em;
+    transition-property: background-color;
+    transition-duration: 0.5s;
+    background-color: #80808000;
+}
+
+.dropdown .dropdown-options *:hover {
+    background-color: #80808080;
 }
 
 #settings-button {
@@ -59,7 +102,8 @@ main {
     --settings-menu-width: 25%;
     --settings-menu-padding: 0.5em;
     position: fixed;
-    display: block;
+    display: flex;
+    flex-flow: column;
     right: calc(var(--settings-menu-width) * -1 - var(--settings-menu-padding) * 2);
     top: 0px;
     width: var(--settings-menu-width);
@@ -75,4 +119,11 @@ main {
 
 #settings-container.open #settings-menu-container {
     right: 0%;
+}
+
+#settings-menu {
+    overflow-y: scroll;
+    padding-left: 1em;
+    padding-right: 1em; 
+    height: 100%;
 }
