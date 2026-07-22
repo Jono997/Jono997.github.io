@@ -1,0 +1,18 @@
+{
+    "light": {
+        "bg_colour": "255 255 255",
+        "text_colour": "0 0 0"
+    },
+    "dark": {
+        "bg_colour": "0 0 0",
+        "text_colour": "255 255 255"
+    },
+    "solarised-light": {
+        "bg_colour": "253 246 227",
+        "text_colour": "0 43 54"
+    },
+    "solarised-dark": {
+        "bg_colour": "0 43 54",
+        "text_colour": "253 246 227"
+    }
+}

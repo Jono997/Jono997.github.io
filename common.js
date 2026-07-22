@@ -41,7 +41,7 @@ function setupDropdown(dropdown)
                     button.innerHTML = option.innerHTML;
                     var on_change = dropdown.attributes['ondropdownchange'];
                     if (on_change != null)
-                        (window[on_change.value])(dropdown.attributes['dropdown-id'].value, dropdown.attributes['dropdown-value'].value);
+                        window[on_change.value](dropdown.attributes['dropdown-id'].value, dropdown.attributes['dropdown-value'].value);
                     e.stopPropagation();
                 });
             }
@@ -52,6 +52,20 @@ function setupDropdown(dropdown)
 function alertDropdownValue(dropdown_id, dropdown_value)
 {
     alert(`ID: ${dropdown_id}\nValue: ${dropdown_value}`);
+}
+
+function applyTheme(theme)
+{
+    console.log(`Applying theme ${theme}`);
+    var css = document.documentElement.style;
+    css.setProperty('--theme-bg-colour', window.themes[theme].bg_colour);
+    css.setProperty('--theme-text-colour', window.themes[theme].text_colour);
+}
+
+function setTheme(_, theme)
+{
+    localStorage.setItem("theme", theme);
+    applyTheme(theme);
 }
 
 // Initialise dropdowns
@@ -67,4 +81,21 @@ function alertDropdownValue(dropdown_id, dropdown_value)
 
     for (dropdown of document.getElementsByClassName("dropdown"))
         setupDropdown(dropdown);
+})();
+
+// Initialise theme
+(async function() {
+    var themes_query = await fetch("themes.json");
+    if (themes_query.ok)
+    {
+        window.themes = await themes_query.json();
+
+        var theme = localStorage.getItem('theme');
+        if (theme === null)
+            theme = 'light';
+        applyTheme(theme);
+    }
+    setTimeout(() => {
+        document.body.classList.add("enable-colour-transitions");
+    }, 10);
 })();

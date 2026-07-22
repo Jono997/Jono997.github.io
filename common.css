@@ -10,7 +10,7 @@
 
 
 
-
+/* Main section */
 body {
     display: flex;
     margin: 0px;
@@ -25,6 +25,11 @@ body {
     color: rgb(var(--theme-text-colour));
 }
 
+body.enable-colour-transitions {
+    transition-property: color;
+    transition-duration: 0.5s;
+}
+
 main {
     display: block;
     width: var(--theme-width, 90%);
@@ -35,6 +40,13 @@ main {
     backdrop-filter: blur(5px);
 }
 
+.enable-colour-transitions main {
+    transition-property: background-color;
+    transition-duration: 0.5s;
+}
+
+
+/* Dropdowns */
 .dropdown {
     width: 100%;
     position: relative;
@@ -69,15 +81,20 @@ main {
 
 .dropdown .dropdown-options * {
     padding: 0.25em;
+    background-color: #80808000;
+}
+
+.enable-colour-transitions .dropdown .dropdown-options * {
     transition-property: background-color;
     transition-duration: 0.5s;
-    background-color: #80808000;
 }
 
 .dropdown .dropdown-options *:hover {
     background-color: #80808080;
 }
 
+
+/* Settings menu */
 #settings-button {
     position: fixed;
     display: block;
@@ -88,9 +105,12 @@ main {
     background-color: rgb(var(--theme-bg-colour) / var(--theme-bg-opacity));
     color: rgb(var(--theme-text-colour));
     backdrop-filter: blur(10px);
+    cursor: pointer;
+}
+
+.enable-colour-transitions #settings-button {
     transition-property: color, background-color;
     transition-duration: 0.5s;
-    cursor: pointer;
 }
 
 #settings-button:hover {
@@ -108,13 +128,18 @@ main {
     top: 0px;
     width: var(--settings-menu-width);
     height: 100vh;
-    background: rgb(var(--theme-bg-colour) / var(--theme-bg-opacity));
+    background-color: rgb(var(--theme-bg-colour) / var(--theme-bg-opacity));
     backdrop-filter: blur(10px);
     transition-property: right;
     transition-duration: 0.5s;
     transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1); /* Quart out */
     padding-left: var(--settings-menu-padding);
     padding-right: var(--settings-menu-padding);
+}
+
+.enable-colour-transitions #settings-menu-container {
+    transition-property: right, background-color;
+    transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1), ease;
 }
 
 #settings-container.open #settings-menu-container {
