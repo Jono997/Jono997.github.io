@@ -18,7 +18,6 @@ function toggleSettingsMenu()
 // Initialises the given dropdown element in the DOM
 function setupDropdown(dropdown)
 {
-    var on_change = dropdown.attributes['ondropdownchange'];
     var button = undefined;
     
     for (child of dropdown.children)
@@ -31,41 +30,7 @@ function setupDropdown(dropdown)
                 e.stopPropagation();
             });
         }
-        
-        if (child.classList.contains("dropdown-options"))
-            for (option of child.children)
-            {
-                option.addEventListener("click", (e) => {
-                    var option = e.currentTarget;
-                    dropdown.attributes.setNamedItem(option.attributes['dropdown-value'].cloneNode());
-                    button.innerHTML = option.innerHTML;
-                    var on_change = dropdown.attributes['ondropdownchange'];
-                    if (on_change != null)
-                        window[on_change.value](dropdown.attributes['dropdown-id'].value, dropdown.attributes['dropdown-value'].value);
-                    e.stopPropagation();
-                });
-            }
     }
-}
-
-// Alerts the current id and value of a dropdown. used for debugging.
-function alertDropdownValue(dropdown_id, dropdown_value)
-{
-    alert(`ID: ${dropdown_id}\nValue: ${dropdown_value}`);
-}
-
-function applyTheme(theme)
-{
-    console.log(`Applying theme ${theme}`);
-    var css = document.documentElement.style;
-    css.setProperty('--theme-bg-colour', window.themes[theme].bg_colour);
-    css.setProperty('--theme-text-colour', window.themes[theme].text_colour);
-}
-
-function setTheme(_, theme)
-{
-    localStorage.setItem("theme", theme);
-    applyTheme(theme);
 }
 
 // Initialise dropdowns
@@ -81,21 +46,4 @@ function setTheme(_, theme)
 
     for (dropdown of document.getElementsByClassName("dropdown"))
         setupDropdown(dropdown);
-})();
-
-// Initialise theme
-(async function() {
-    var themes_query = await fetch("themes.json");
-    if (themes_query.ok)
-    {
-        window.themes = await themes_query.json();
-
-        var theme = localStorage.getItem('theme');
-        if (theme === null)
-            theme = 'light';
-        applyTheme(theme);
-    }
-    setTimeout(() => {
-        document.body.classList.add("enable-colour-transitions");
-    }, 10);
 })();
