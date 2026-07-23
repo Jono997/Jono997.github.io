@@ -94,6 +94,18 @@ main {
 }
 
 
+/* Sliders */
+.slider {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.slider input[type=range] {
+    width: 100%;
+}
+
+
 /* Settings menu */
 #settings-button {
     position: fixed;
@@ -151,4 +163,8 @@ main {
     padding-left: 1em;
     padding-right: 1em; 
     height: 100%;
+}
+
+#settings-menu > input[type=number] {
+    width: 100%;
 }
