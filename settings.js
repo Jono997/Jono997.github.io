@@ -7,6 +7,7 @@
                 type: "dropdown",
                 values: theme_list,
                 default: 0,
+                hover_preview: true,
                 update: function(value) {
                     var css = document.documentElement.style;
                     css.setProperty('--theme-bg-colour', j99_themes[value].bg_colour);
@@ -131,7 +132,6 @@
                 for (value of setting.values)
                     if (j99_settings[setting.id] == value.value)
                         button.innerHTML = value.name;
-                //button.innerHTML = setting.values[j99_settings[setting.id]].name;
                 button.onclick = (e) => {
                     document.active_dropdown = (toggleClass(dropdown, "active") ? dropdown : undefined);
                     e.stopPropagation();
@@ -152,6 +152,24 @@
                             e.stopPropagation();
                         }
                     })(setting, value, button, dropdown);
+                    if (setting.hover_preview)
+                        value_node.onmouseenter = (function(setting, value) {
+                        return function() {
+                            if (setting.hover_end_timeout)
+                            {
+                                clearTimeout(setting.hover_end_timeout);
+                                setting.hover_end_timeout = undefined;
+                            }
+                            setting.update(value.value);
+                        }
+                    })(setting, value);
+                    value_node.onmouseleave = (function(setting) {
+                        return function() {
+                            setting['hover_end_timeout'] = setTimeout(function() {
+                                setting.update(j99_settings[setting.id]);
+                            }, 10);
+                        }
+                    })(setting);
                     options.appendChild(value_node);
                 }
                 dropdown.appendChild(options);
