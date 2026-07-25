@@ -33,6 +33,14 @@ function setupDropdown(dropdown)
     }
 }
 
+// Creates an attribute node with the name and value provided
+function makeAttribute(name, value)
+{
+    var retval = document.createAttribute(name);
+    retval.value = value;
+    return retval;
+}
+
 // Initialise dropdowns
 (function() {
     document.active_dropdown = undefined;

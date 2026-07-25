@@ -106,9 +106,7 @@
             retval.innerHTML = option.html;
         else
             retval.innerHTML = option.name;
-        var value_attr = document.createAttribute("data-dropdown-value");
-        value_attr.value = option.value;
-        retval.attributes.setNamedItem(value_attr);
+        retval.attributes.setNamedItem(makeAttribute("data-dropdown-value", option.value));
         return retval;
     };
 
@@ -116,6 +114,8 @@
     var settings_menu = document.getElementById("settings-menu");
     for (s in j99_settings_template)
     {
+        var wrapper = document.createElement("div");
+        wrapper.classList.add("setting");
         var setting = j99_settings_template[s];
         var header = document.createElement("h3");
         header.innerHTML = setting.name;
@@ -176,19 +176,15 @@
             break;
             case "number":
                 var numeric = document.createElement("input");
-                var attributes = {
-                    type: "number"
-                };
+                var attributes = [
+                    ["type", "number"]
+                ];
                 if (Object.hasOwn(setting, "min"))
-                    attributes["min"] = setting.min;
+                    attributes.push(["min", setting.min]);
                 if (Object.hasOwn(setting, "max"))
-                    attributes["max"] = setting.max;
-                for (name in attributes)
-                {
-                    var attribute = document.createAttribute(name);
-                    attribute.value = attributes[name];
-                    numeric.attributes.setNamedItem(attribute);
-                }
+                    attributes.push(["max", setting.max]);
+                for (attr of attributes)
+                    numeric.attributes.setNamedItem(makeAttribute(attr[0], attr[1]));
                 numeric.value = j99_settings[setting.id];
                 numeric.onchange = (function(setting, numeric) {
                     return function() {
@@ -203,40 +199,32 @@
                 settings_menu.appendChild(slider);
                 
                 var numeric = document.createElement("input");
-                var num_attributes = {
-                    type: "number",
-                    min: setting.min,
-                    max: setting.max
-                };
-                for (name in num_attributes)
-                {
-                    var attribute = document.createAttribute(name);
-                    attribute.value = num_attributes[name];
-                    numeric.attributes.setNamedItem(attribute);
-                }
+                var num_attributes = [
+                    ["type", "number"],
+                    ["min", setting.min],
+                    ["max", setting.max]
+                ];
+                for (attr of num_attributes)
+                    numeric.attributes.setNamedItem(makeAttribute(attr[0], attr[1]));
                 numeric.value = j99_settings[setting.id];
                 
                 var actual_slider = document.createElement("input");
-                var as_attributes = {
-                    type: "range",
-                    min: setting.min,
-                    max: setting.max
-                };
-                for (name in as_attributes)
-                    {
-                        var attribute = document.createAttribute(name);
-                        attribute.value = as_attributes[name];
-                        actual_slider.attributes.setNamedItem(attribute);
-                    }
-                    actual_slider.value = j99_settings[setting.id];
+                var as_attributes = [
+                    ["type", "range"],
+                    ["min", setting.min],
+                    ["max", setting.max]
+                ];
+                for (attr of as_attributes)
+                    actual_slider.attributes.setNamedItem(makeAttribute(attr[0], attr[1]));
+                actual_slider.value = j99_settings[setting.id];
                     
-                    numeric.onchange = (function(setting, numeric, actual_slider) {
-                        return function() {
-                            actual_slider.value = numeric.value;
-                            writeSetting(setting.id, numeric.value);
-                        }
-                    })(setting, numeric, actual_slider);
-                    actual_slider.oninput = (function(numeric, actual_slider) {
+                numeric.onchange = (function(setting, numeric, actual_slider) {
+                    return function() {
+                        actual_slider.value = numeric.value;
+                        writeSetting(setting.id, numeric.value);
+                    }
+                })(setting, numeric, actual_slider);
+                actual_slider.oninput = (function(numeric, actual_slider) {
                         return function() {
                         numeric.value = actual_slider.value;
                         writeSetting(setting.id, actual_slider.value);
