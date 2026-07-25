@@ -170,6 +170,10 @@ main {
     height: 100%;
 }
 
-#settings-menu > input[type=number] {
+.setting > input[type=number] {
     width: 100%;
+}
+
+.setting.hidden {
+    display: none !important;
 }

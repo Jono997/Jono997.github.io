@@ -8,6 +8,7 @@
                 values: theme_list,
                 default: 0,
                 hover_preview: true,
+                visible: true,
                 update: function(value) {
                     var css = document.documentElement.style;
                     css.setProperty('--theme-bg-colour', j99_themes[value].bg_colour);
@@ -20,6 +21,7 @@
                 type: "number",
                 min: 5,
                 default: 16,
+                visible: true,
                 update: function(value) {
                     var css = document.documentElement.style;
                     css.setProperty('--theme-font-size', `${value}px`);
@@ -32,6 +34,7 @@
                 min: 5,
                 max: 100,
                 default: 90,
+                visible: true,
                 update: function(value) {
                     var css = document.documentElement.style;
                     css.setProperty('--theme-width', `${value}%`);
@@ -114,18 +117,23 @@
     var settings_menu = document.getElementById("settings-menu");
     for (s in j99_settings_template)
     {
+        var setting = j99_settings_template[s];
         var wrapper = document.createElement("div");
         wrapper.classList.add("setting");
-        var setting = j99_settings_template[s];
+        wrapper.attributes.setNamedItem(makeAttribute("setting-id", setting.id));
+        if (setting.hidden)
+            wrapper.classList.add("hidden");
+        settings_menu.appendChild(wrapper);
+
         var header = document.createElement("h3");
         header.innerHTML = setting.name;
-        settings_menu.appendChild(header);
+        wrapper.appendChild(header);
         switch (setting.type)
         {
             case "dropdown":
                 var dropdown = document.createElement("div");
                 dropdown.classList.add("dropdown");
-                settings_menu.appendChild(dropdown);
+                wrapper.appendChild(dropdown);
                 
                 var button = document.createElement("span");
                 button.classList.add("dropdown-button");
@@ -191,12 +199,12 @@
                         writeSetting(setting.id, numeric.value);
                     }
                 })(setting, numeric);
-                settings_menu.appendChild(numeric);
+                wrapper.appendChild(numeric);
             break;
             case "slider":
                 var slider = document.createElement("div");
                 slider.classList.add("slider");
-                settings_menu.appendChild(slider);
+                wrapper.appendChild(slider);
                 
                 var numeric = document.createElement("input");
                 var num_attributes = [
@@ -236,3 +244,13 @@
         }
     }
 })();
+
+function showSetting(setting_id)
+{
+    document.querySelector(`.setting[setting-id="${setting_id}"]`).classList.remove("hidden");
+}
+
+function hideSetting(setting_id)
+{
+    document.querySelector(`.setting[setting-id="${setting_id}"]`).classList.add("hidden");
+}
