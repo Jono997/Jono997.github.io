@@ -1,0 +1,65 @@
+[
+    {
+        "name": "Welcome to the Library",
+        "filename": "Welcome_to_the_Library.png",
+        "artist": "0000stuff",
+        "artist_link": "https://tumblr.com/0000stuff",
+        "tags": ["Light", "Dark", "Furry", "Coloured", "Fully shaded", "Finished lineart", "Detailed background"]
+    },
+    {
+        "name": "Wandering Thoughts",
+        "filename": "Wandering_Thoughts.png",
+        "artist": "0000stuff",
+        "artist_link": "https://tumblr.com/0000stuff",
+        "tags": ["Light", "Furry", "Monochrome", "Flat shaded", "Sketch", "No background"]
+    },
+    {
+        "name": "Before Summer Ends",
+        "filename": "Before_Summer_Ends.png",
+        "artist": "0000stuff",
+        "artist_link": "https://tumblr.com/0000stuff",
+        "tags": ["Light", "Furry", "Coloured", "Flat shaded", "Finished lineart", "Detailed background"]
+    },
+    {
+        "name": "Hard at Work",
+        "filename": "Hard_at_Work.jpg",
+        "artist": "JumpCat",
+        "artist_link": "https://tumblr.com/jumpcat7",
+        "tags": ["Light", "Dark", "Human", "Coloured", "Flat shaded", "Sketch", "Detailed background"]
+    },
+    {
+        "name": "Idle Time",
+        "filename": "Idle_Time.png",
+        "artist": "i_KRS",
+        "artist_link": "https://twitter.com/kris_as_risk",
+        "tags": ["Light", "Dark", "Furry", "Coloured", "Flat shaded", "Sketch", "Finished lineart", "Simple background"]
+    },
+    {
+        "name": "metathesis",
+        "filename": "metathesis.png",
+        "artist": "Transendium",
+        "artist_link": "https://www.pixiv.net/en/artworks/122049997",
+        "tags": ["Dark", "Abstract"]
+    },
+    {
+        "name": "Late Night Reading",
+        "filename": "Late_Night_Reading.png",
+        "artist": "Komiya Meiko",
+        "artist_link": "https://meiko.zip",
+        "tags": ["Light", "Dark", "Human", "Coloured", "Fully shaded", "Finished lineart", "Detailed background"]
+    },
+    {
+        "name": "Moongazer",
+        "filename": "Moongazer.png",
+        "artist": "Zev Ross",
+        "artist_link": "https://zevsart.com",
+        "tags": ["Dark", "Human", "Coloured", "Fully shaded", "Finished lineart", "Detailed background"]
+    },
+    {
+        "name": "The Floof Scale",
+        "filename": "The_Floof_Scale.png",
+        "artist": "Rioichi Karihazi",
+        "artist_link": "https://bsky.app/profile/rioichikarihazi.bsky.social",
+        "tags": ["Light", "Dark", "Human", "Furry", "Coloured", "Flat shaded", "Finished lineart", "Simple background"]
+    }
+]
