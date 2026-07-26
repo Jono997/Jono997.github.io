@@ -1,5 +1,5 @@
 (async function(){
-    var getSettingsTemplate = function(theme_list) {
+    var getSettingsTemplate = function(theme_list, background_list) {
         var retval = [
             {
                 name: "Theme",
@@ -13,6 +13,58 @@
                     css.setProperty('--theme-bg-colour', j99_themes[value].bg_colour);
                     css.setProperty('--theme-text-colour', j99_themes[value].text_colour);
                 }
+            },
+            {
+                name: "Background",
+                id: "bgisrandom",
+                type: "radio",
+                values: [
+                    {
+                        name: "Specific",
+                        value: false
+                    },
+                    {
+                        name: "Random",
+                        value: true
+                    }
+                ],
+                default: 1,
+                update: function(value) {
+                    var bg_setting_groups = [
+                        ["bg"],
+                        ["bgtags", "bgrandomperpage"]
+                    ];
+                    for (setting of bg_setting_groups[0])
+                        (value ? hideSetting : showSetting)(setting);
+                    for (setting of bg_setting_groups[1])
+                        (value ? showSetting : hideSetting)(setting);
+                }
+            },
+            {
+                id: "bg",
+                type: "dropdown",
+                values: background_list,
+                hover_preview: true,
+                hidden: true,
+                default: 1,
+                update: function(value) {
+                    if (!j99_settings.bgisrandom)
+                        document.documentElement.style.setProperty('--theme-background', `url("assets/bg/${j99_backgrounds[value].filename}")`);
+                }
+            },
+            {
+                name: "Background tags",
+                id: "bgtags",
+                type: "placeholder",
+                hidden: true,
+                default: []
+            },
+            {
+                name: "Background change frequency",
+                id: "bgrandomperpage",
+                type: "placeholder",
+                hidden: true,
+                default: true
             },
             {
                 name: "Font size",
@@ -59,20 +111,37 @@
 
 
     window.j99_themes = await (async function() {
-    var themes_query = await fetch("themes.json");
-    if (themes_query.ok)
-        return await themes_query.json();
-    return {};
+        var themes_query = await fetch("themes.json");
+        if (themes_query.ok)
+            return await themes_query.json();
+        return {};
     })();
 
     var theme_list = [];
-    for (theme of Object.getOwnPropertyNames(j99_themes))
+    for (theme in j99_themes)
         theme_list.push({
             name: j99_themes[theme].name,
             value: theme
         });
 
-    window.j99_settings_template = getSettingsTemplate(theme_list);
+    window.j99_backgrounds = await (async function() {
+        var bg_query = await fetch("assets/bg/backgrounds.json");
+        if (bg_query.ok)
+            return await bg_query.json();
+    })();
+
+    var bg_list = [];
+    for (i in j99_backgrounds)
+    {
+        var bg = j99_backgrounds[i];
+        bg_list.push({
+            name: bg.name,
+            value: i,
+            html: `<div class="background-dropdown"><div class="background-thumbnail" style="background-image: url(assets/bg/${bg.filename});"></div><div class="background-label">${bg.name}</div></div>`,
+        });
+    }
+
+    window.j99_settings_template = getSettingsTemplate(theme_list, bg_list);
 
     // Load settings
     var settings_json = localStorage.getItem('settings');
@@ -94,26 +163,6 @@
                 j99_settings[setting.id] = setting.values[setting.default].value;
         }
     }
-
-    // Apply settings
-    // Separated from reading the settings in case any settings need to account for other settings
-    for (setting of j99_settings_template)
-        setting.update(j99_settings[setting.id]);
-    setTimeout(() => {
-        document.body.classList.add("enable-colour-transitions");
-    }, 5);
-
-    window.writeSetting = function(id, value)
-    {
-        j99_settings[id] = value;
-        localStorage.setItem("settings", JSON.stringify(j99_settings));
-        for (i in j99_settings_template)
-        {
-            var setting = j99_settings_template[i];
-            if (id === setting.id)
-                setting.update(value);
-        }
-    };
 
     var make_dropdown_option = function(option) {
         var retval = document.createElement("div")
@@ -145,69 +194,103 @@
         }
         switch (setting.type)
         {
+            case "placeholder":
+                var placeholder = document.createElement("div");
+                placeholder.innerHTML = "To be added";
+                wrapper.appendChild(placeholder);
+            break;
             case "dropdown":
-                var dropdown = document.createElement("div");
-                dropdown.classList.add("dropdown");
-                wrapper.appendChild(dropdown);
-                
-                var button = document.createElement("span");
-                button.classList.add("dropdown-button");
-                for (value of setting.values)
-                    if (j99_settings[setting.id] == value.value)
-                        button.innerHTML = value.name;
-                button.onclick = (e) => {
-                    document.active_dropdown = (toggleClass(dropdown, "active") ? dropdown : undefined);
-                    e.stopPropagation();
-                };
-                dropdown.appendChild(button);
-
-                var options = document.createElement("div");
-                options.classList.add("dropdown-options");
-                for (i in setting.values)
-                {
-                    var value = setting.values[i];
-                    var value_node = make_dropdown_option(value);
-                    value_node.onclick = (function(setting, value, button, dropdown) {
-                        return function(e) {
+                (function(setting){
+                    var dropdown = document.createElement("div");
+                    dropdown.classList.add("dropdown");
+                    wrapper.appendChild(dropdown);
+                    
+                    var button = document.createElement("span");
+                    button.classList.add("dropdown-button");
+                    for (value of setting.values)
+                        if (j99_settings[setting.id] == value.value)
                             button.innerHTML = value.name;
-                            writeSetting(setting.id, value.value);
-                            toggleClass(dropdown, "active");
-                            e.stopPropagation();
-                        }
-                    })(setting, value, button, dropdown);
-                    if (setting.hover_preview)
-                        value_node.onmouseenter = (function(setting, value) {
-                        return function() {
-                            if (setting.hover_end_timeout)
-                            {
-                                clearTimeout(setting.hover_end_timeout);
-                                setting.hover_end_timeout = undefined;
+                    button.onclick = (e) => {
+                        openDropdown(dropdown);
+                        e.stopPropagation();
+                    };
+                    dropdown.appendChild(button);
+
+                    var options = document.createElement("div");
+                    options.classList.add("dropdown-options");
+                    for (value of setting.values)
+                    {
+                        var value_node = make_dropdown_option(value);
+                        value_node.onclick = (function(setting, value, button, dropdown) {
+                            return function(e) {
+                                button.innerHTML = value.name;
+                                writeSetting(setting.id, value.value);
+                                if (!setting.hover_preview)
+                                    setting.update(value.value);
+                                toggleClass(dropdown, "active");
+                                e.stopPropagation();
                             }
+                        })(setting, value, button, dropdown);
+                        if (setting.hover_preview)
+                            value_node.onmouseenter = (function(setting, value) {
+                            return function() {
+                                if (setting.hover_end_timeout)
+                                {
+                                    clearTimeout(setting.hover_end_timeout);
+                                    setting.hover_end_timeout = undefined;
+                                }
+                                setting.update(value.value);
+                            }
+                        })(setting, value);
+                        value_node.onmouseleave = (function(setting) {
+                            return function() {
+                                setting['hover_end_timeout'] = setTimeout(function() {
+                                    setting.update(j99_settings[setting.id]);
+                                }, 10);
+                            }
+                        })(setting);
+                        options.appendChild(value_node);
+                    }
+                    dropdown.appendChild(options);
+                })(setting);
+            break;
+            case "radio":
+                var options = document.createElement("div");
+                options.classList.add("flexbox");
+                for (value of setting.values)
+                {
+                    var value_container = document.createElement("span");
+                    options.appendChild(value_container);
+
+                    var value_node = document.createElement("input");
+                    value_node.type = "radio";
+                    value_node.name = `setting-${setting.id}`;
+                    value_node.id = value.value;
+                    value_node.checked = (j99_settings[setting.id] == value.value);
+                    value_container.appendChild(value_node);
+
+                    var value_label = document.createElement("label");
+                    value_label.for = value.value;
+                    value_label.innerHTML = value.name;
+                    value_container.appendChild(value_label);
+                    
+                    value_node.onclick = value_label.onclick = (function(setting, value, value_node) {
+                        return function() {
+                            value_node.checked = true;
+                            writeSetting(setting.id, value.value);
                             setting.update(value.value);
                         }
-                    })(setting, value);
-                    value_node.onmouseleave = (function(setting) {
-                        return function() {
-                            setting['hover_end_timeout'] = setTimeout(function() {
-                                setting.update(j99_settings[setting.id]);
-                            }, 10);
-                        }
-                    })(setting);
-                    options.appendChild(value_node);
+                    })(setting, value, value_node);
                 }
-                dropdown.appendChild(options);
+                wrapper.appendChild(options);
             break;
             case "number":
                 var numeric = document.createElement("input");
-                var attributes = [
-                    ["type", "number"]
-                ];
+                numeric.type = "number";
                 if (Object.hasOwn(setting, "min"))
-                    attributes.push(["min", setting.min]);
+                    numeric.min = setting.min;
                 if (Object.hasOwn(setting, "max"))
-                    attributes.push(["max", setting.max]);
-                for (attr of attributes)
-                    numeric.attributes.setNamedItem(makeAttribute(attr[0], attr[1]));
+                    numeric.max = setting.max;
                 numeric.value = j99_settings[setting.id];
                 numeric.onchange = (function(setting, numeric) {
                     return function() {
@@ -222,23 +305,15 @@
                 wrapper.appendChild(slider);
                 
                 var numeric = document.createElement("input");
-                var num_attributes = [
-                    ["type", "number"],
-                    ["min", setting.min],
-                    ["max", setting.max]
-                ];
-                for (attr of num_attributes)
-                    numeric.attributes.setNamedItem(makeAttribute(attr[0], attr[1]));
+                numeric.type = "number";
+                numeric.min = setting.min;
+                numeric.max = setting.max;
                 numeric.value = j99_settings[setting.id];
                 
                 var actual_slider = document.createElement("input");
-                var as_attributes = [
-                    ["type", "range"],
-                    ["min", setting.min],
-                    ["max", setting.max]
-                ];
-                for (attr of as_attributes)
-                    actual_slider.attributes.setNamedItem(makeAttribute(attr[0], attr[1]));
+                actual_slider.type = "range";
+                actual_slider.min = setting.min;
+                actual_slider.max = setting.max;
                 actual_slider.value = j99_settings[setting.id];
                     
                 numeric.onchange = (function(setting, numeric, actual_slider) {
@@ -258,6 +333,25 @@
             break;
         }
     }
+
+    // Apply settings
+    // Separated from reading the settings in case any settings need to account for other settings
+    for (setting of j99_settings_template)
+        setting.update(j99_settings[setting.id]);
+    setTimeout(() => {
+        document.body.classList.add("enable-colour-transitions");
+    }, 5);
+
+    window.writeSetting = function(id, value)
+    {
+        j99_settings[id] = value;
+        localStorage.setItem("settings", JSON.stringify(j99_settings));
+        for (setting of j99_settings_template)
+        {
+            if (id === setting.id)
+                setting.update(value);
+        }
+    };
 })();
 
 function showSetting(setting_id)

@@ -26,10 +26,21 @@ function setupDropdown(dropdown)
         {
             button = child;
             child.addEventListener("click", (e) => {
-                document.active_dropdown = (toggleClass(dropdown, "active") ? dropdown : undefined);
+                openDropdown(dropdown);
                 e.stopPropagation();
             });
         }
+    }
+}
+
+function openDropdown(dropdown)
+{
+    if (document.active_dropdown !== undefined)
+       toggleClass(document.active_dropdown, "active");
+    if (document.active_dropdown !== dropdown)
+    {
+        toggleClass(dropdown, "active");
+        document.active_dropdown = dropdown;
     }
 }
 

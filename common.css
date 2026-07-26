@@ -8,7 +8,12 @@
 
 
 
-
+.flexbox {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
 
 /* Main section */
 body {
@@ -17,7 +22,7 @@ body {
     height: 100vh;
     font-family: Calibri, 'Trebuchet MS', sans-serif;
     font-size: var(--theme-font-size);
-    background-image: url("assets/bg/Hard_at_Work.jpg");
+    background-image: var(--theme-background);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -73,6 +78,7 @@ main {
     backdrop-filter: blur(10px);
     border: solid rgb(var(--theme-text-colour)) 1px;
     border-top: none;
+    z-index: 1;
 }
 
 .enable-colour-transitions .dropdown-button, .enable-colour-transitions .dropdown-options {
@@ -84,17 +90,17 @@ main {
     display: block;
 }
 
-.dropdown .dropdown-options * {
+.dropdown .dropdown-options > * {
     padding: 0.25em;
     background-color: #80808000;
 }
 
-.enable-colour-transitions .dropdown .dropdown-options * {
+.enable-colour-transitions .dropdown .dropdown-options > * {
     transition-property: background-color;
     transition-duration: 0.5s;
 }
 
-.dropdown .dropdown-options *:hover {
+.dropdown .dropdown-options > *:hover {
     background-color: #80808080;
 }
 
@@ -176,4 +182,22 @@ main {
 
 .setting.hidden {
     display: none !important;
+}
+
+.background-dropdown {
+    display: grid;
+    grid-template-columns: 4.5em auto;
+}
+
+.background-thumbnail {
+    width: 4em;
+    height: 4em;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.background-label {
+    margin: auto;
+    font-size: 1.5em;
 }
