@@ -137,9 +137,12 @@
             wrapper.classList.add("hidden");
         settings_menu.appendChild(wrapper);
 
-        var header = document.createElement("h3");
-        header.innerHTML = setting.name;
-        wrapper.appendChild(header);
+        if (!setting.no_header)
+        {
+            var header = document.createElement("h3");
+            header.innerHTML = setting.name;
+            wrapper.appendChild(header);
+        }
         switch (setting.type)
         {
             case "dropdown":
