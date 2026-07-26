@@ -1,6 +1,6 @@
 (async function(){
     var getSettingsTemplate = function(theme_list) {
-        return [
+        var retval = [
             {
                 name: "Theme",
                 id: "theme",
@@ -8,7 +8,6 @@
                 values: theme_list,
                 default: 0,
                 hover_preview: true,
-                visible: true,
                 update: function(value) {
                     var css = document.documentElement.style;
                     css.setProperty('--theme-bg-colour', j99_themes[value].bg_colour);
@@ -21,7 +20,6 @@
                 type: "number",
                 min: 5,
                 default: 16,
-                visible: true,
                 update: function(value) {
                     var css = document.documentElement.style;
                     css.setProperty('--theme-font-size', `${value}px`);
@@ -34,13 +32,27 @@
                 min: 5,
                 max: 100,
                 default: 90,
-                visible: true,
                 update: function(value) {
                     var css = document.documentElement.style;
                     css.setProperty('--theme-width', `${value}%`);
                 }
             }
         ];
+
+        // Filling defaults
+        var def = {
+            name: "",
+            no_name: false,
+            hover_preview: false,
+            visible: true,
+            update: function() {}
+        };
+
+        for (setting of retval)
+            for (param in def)
+                if (!Object.hasOwn(setting, param))
+                    setting[param] = def[param];
+        return retval;
     };
 
 
