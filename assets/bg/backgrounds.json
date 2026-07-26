@@ -61,5 +61,19 @@
         "artist": "Rioichi Karihazi",
         "artist_link": "https://bsky.app/profile/rioichikarihazi.bsky.social",
         "tags": ["Light", "Dark", "Human", "Furry", "Coloured", "Flat shaded", "Finished lineart", "Simple background"]
+    },
+    {
+        "name": "The Floof Scale (Human only)",
+        "filename": "TFS_Human.png",
+        "artist": "Rioichi Karihazi",
+        "artist_link": "https://bsky.app/profile/rioichikarihazi.bsky.social",
+        "tags": ["Light", "Dark", "Human", "Coloured", "Flat shaded", "Finished lineart", "Simple background"]
+    },
+    {
+        "name": "The Floof Scale (Wolf only)",
+        "filename": "TFS_Wolf.png",
+        "artist": "Rioichi Karihazi",
+        "artist_link": "https://bsky.app/profile/rioichikarihazi.bsky.social",
+        "tags": ["Light", "Dark", "Furry", "Coloured", "Flat shaded", "Finished lineart", "Simple background"]
     }
 ]
