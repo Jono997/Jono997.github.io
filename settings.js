@@ -41,6 +41,7 @@
                 }
             },
             {
+                no_name: true,
                 id: "bg",
                 type: "dropdown",
                 values: background_list,
@@ -119,7 +120,8 @@
     };
 
 
-
+    window.j99_hide_furry_style = document.createElement("style");
+    document.head.appendChild(j99_hide_furry_style);
 
     window.j99_themes = await (async function() {
         var themes_query = await fetch("themes.json");
@@ -219,7 +221,8 @@
                 placeholder.innerHTML = "To be added";
                 wrapper.appendChild(placeholder);
             break;
-            case "dropdown": (function(setting){
+
+            case "dropdown": (function(setting) {
                 var dropdown = document.createElement("div");
                 dropdown.classList.add("dropdown");
                 wrapper.appendChild(dropdown);
@@ -269,6 +272,7 @@
                 }
                 dropdown.appendChild(options);
             })(setting); break;
+            
             case "radio": (function(setting) {
                 var options = document.createElement("div");
                 options.classList.add("flexbox");
@@ -299,6 +303,7 @@
                 }
                 wrapper.appendChild(options);
             })(setting); break;
+
             case "number": (function(setting) {
                 var numeric = document.createElement("input");
                 numeric.type = "number";
@@ -314,6 +319,7 @@
                 })(setting, numeric);
                 wrapper.appendChild(numeric);
             })(setting); break;
+
             case "slider": (function(setting) {
                 var slider = document.createElement("div");
                 slider.classList.add("slider");
@@ -346,6 +352,7 @@
                 slider.appendChild(actual_slider);
                 slider.appendChild(numeric);
             })(setting); break;
+
             case "tagfilter": (function(setting) {
                 var container = document.createElement("div");
                 container.classList.add("flexbox");
@@ -385,6 +392,26 @@
                         };
                         container.appendChild(tag_node);
                     })(setting, tag);
+            })(setting); break;
+
+            case "checkbox": (function(setting) {
+                var checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.onchange = function() {
+                    j99_settings[setting.id] = checkbox.checked;
+                    setting.update(checkbox.checked);
+                }
+                wrapper.appendChild(checkbox);
+
+                var label = document.createElement("label");
+                label.innerHTML = setting.name;
+                wrapper.appendChild(label);
+
+                label.onclick = function() {
+                    checkbox.checked = !checkbox.checked;
+                    j99_settings[setting.id] = checkbox.checked;
+                    setting.update(checkbox.checked);
+                }
             })(setting); break;
         }
     }
