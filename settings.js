@@ -219,41 +219,39 @@
                 placeholder.innerHTML = "To be added";
                 wrapper.appendChild(placeholder);
             break;
-            case "dropdown":
-                (function(setting){
-                    var dropdown = document.createElement("div");
-                    dropdown.classList.add("dropdown");
-                    wrapper.appendChild(dropdown);
-                    
-                    var button = document.createElement("span");
-                    button.classList.add("dropdown-button");
-                    for (value of setting.values)
-                        if (j99_settings[setting.id] == value.value)
-                            button.innerHTML = value.name;
-                    button.onclick = (e) => {
-                        openDropdown(dropdown);
-                        e.stopPropagation();
-                    };
-                    dropdown.appendChild(button);
+            case "dropdown": (function(setting){
+                var dropdown = document.createElement("div");
+                dropdown.classList.add("dropdown");
+                wrapper.appendChild(dropdown);
+                
+                var button = document.createElement("span");
+                button.classList.add("dropdown-button");
+                for (value of setting.values)
+                    if (j99_settings[setting.id] == value.value)
+                        button.innerHTML = value.name;
+                button.onclick = (e) => {
+                    openDropdown(dropdown);
+                    e.stopPropagation();
+                };
+                dropdown.appendChild(button);
 
-                    var options = document.createElement("div");
-                    options.classList.add("dropdown-options");
-                    for (value of setting.values)
-                    {
+                var options = document.createElement("div");
+                options.classList.add("dropdown-options");
+                for (value of setting.values)
+                {
+                    (function(setting, value, button, dropdown) {
                         var value_node = make_dropdown_option(value);
-                        value_node.onclick = (function(setting, value, button, dropdown) {
-                            return function(e) {
-                                button.innerHTML = value.name;
-                                writeSetting(setting.id, value.value);
-                                if (!setting.hover_preview)
-                                    setting.update(value.value);
-                                toggleClass(dropdown, "active");
-                                e.stopPropagation();
-                            }
-                        })(setting, value, button, dropdown);
+                        value_node.onclick = function(e) {
+                            button.innerHTML = value.name;
+                            writeSetting(setting.id, value.value);
+                            if (!setting.hover_preview)
+                                setting.update(value.value);
+                            toggleClass(dropdown, "active");
+                            e.stopPropagation();
+                        }
+                        
                         if (setting.hover_preview)
-                            value_node.onmouseenter = (function(setting, value) {
-                            return function() {
+                            value_node.onmouseenter = function() {
                                 if (setting.hover_end_timeout)
                                 {
                                     clearTimeout(setting.hover_end_timeout);
@@ -261,20 +259,17 @@
                                 }
                                 setting.update(value.value);
                             }
-                        })(setting, value);
-                        value_node.onmouseleave = (function(setting) {
-                            return function() {
-                                setting['hover_end_timeout'] = setTimeout(function() {
-                                    setting.update(j99_settings[setting.id]);
-                                }, 10);
-                            }
-                        })(setting);
+                        value_node.onmouseleave = function() {
+                            setting['hover_end_timeout'] = setTimeout(function() {
+                                setting.update(j99_settings[setting.id]);
+                            }, 10);
+                        }
                         options.appendChild(value_node);
-                    }
-                    dropdown.appendChild(options);
-                })(setting);
-            break;
-            case "radio":
+                    })(setting, value, button, dropdown);
+                }
+                dropdown.appendChild(options);
+            })(setting); break;
+            case "radio": (function(setting) {
                 var options = document.createElement("div");
                 options.classList.add("flexbox");
                 for (value of setting.values)
@@ -303,8 +298,8 @@
                     })(setting, value, value_node);
                 }
                 wrapper.appendChild(options);
-            break;
-            case "number":
+            })(setting); break;
+            case "number": (function(setting) {
                 var numeric = document.createElement("input");
                 numeric.type = "number";
                 if (Object.hasOwn(setting, "min"))
@@ -318,8 +313,8 @@
                     }
                 })(setting, numeric);
                 wrapper.appendChild(numeric);
-            break;
-            case "slider":
+            })(setting); break;
+            case "slider": (function(setting) {
                 var slider = document.createElement("div");
                 slider.classList.add("slider");
                 wrapper.appendChild(slider);
@@ -350,8 +345,8 @@
                 })(numeric, actual_slider);
                 slider.appendChild(actual_slider);
                 slider.appendChild(numeric);
-            break;
-            case "tagfilter":
+            })(setting); break;
+            case "tagfilter": (function(setting) {
                 var container = document.createElement("div");
                 container.classList.add("flexbox");
                 container.style.setProperty("justify-content", "space-around");
@@ -390,7 +385,7 @@
                         };
                         container.appendChild(tag_node);
                     })(setting, tag);
-            break;
+            })(setting); break;
         }
     }
 
