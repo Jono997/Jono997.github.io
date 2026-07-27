@@ -1,5 +1,5 @@
 (async function(){
-    var getSettingsTemplate = function(theme_list, background_list) {
+    var getSettingsTemplate = function(theme_list, background_list, tag_list) {
         var retval = [
             {
                 name: "Theme",
@@ -55,16 +55,27 @@
             {
                 name: "Background tags",
                 id: "bgtags",
-                type: "placeholder",
+                type: "tagfilter",
                 hidden: true,
-                default: []
+                default: {whitelist: [], blacklist: []},
+                values: tag_list
             },
             {
                 name: "Background change frequency",
                 id: "bgrandomperpage",
-                type: "placeholder",
+                type: "radio",
+                values: [
+                    {
+                        name: "Per-refresh",
+                        value: false
+                    },
+                    {
+                        name: "Per-page",
+                        value: true
+                    }
+                ],
                 hidden: true,
-                default: true
+                default: 1
             },
             {
                 name: "Font size",
@@ -131,6 +142,7 @@
     })();
 
     var bg_list = [];
+    var tag_list = [];
     for (i in j99_backgrounds)
     {
         var bg = j99_backgrounds[i];
@@ -139,9 +151,17 @@
             value: i,
             html: `<div class="background-dropdown"><div class="background-thumbnail" style="background-image: url(assets/bg/${bg.filename});"></div><div class="background-label">${bg.name}</div></div>`,
         });
+        for (tag of bg.tags)
+            if (!tag_list.includes(tag))
+                tag_list.push(tag);
     }
+    for (i in tag_list)
+        tag_list[i] = {
+            name: tag_list[i],
+            value: tag_list[i]
+        };
 
-    window.j99_settings_template = getSettingsTemplate(theme_list, bg_list);
+    window.j99_settings_template = getSettingsTemplate(theme_list, bg_list, tag_list);
 
     // Load settings
     var settings_json = localStorage.getItem('settings');
@@ -331,6 +351,46 @@
                 slider.appendChild(actual_slider);
                 slider.appendChild(numeric);
             break;
+            case "tagfilter":
+                var container = document.createElement("div");
+                container.classList.add("flexbox");
+                container.style.setProperty("justify-content", "space-around");
+                wrapper.appendChild(container);
+
+                for (tag of setting.values)
+                    (function(setting, tag){
+                        var tag_node = document.createElement("span");
+                        tag_node.classList.add("tag-filter");
+                        tag_node.attributes.setNamedItem(makeAttribute("tag-id", tag.value));
+                        tag_node.innerHTML = tag.name;
+                        var tag_state = makeAttribute("tag-state", "unset");
+                        if (j99_settings[setting.id].whitelist.includes(tag.id))
+                            tag_state.value = "include";
+                        if (j99_settings[setting.id].blacklist.includes(tag.id))
+                            tag_state.value = "exclude";
+                        tag_node.attributes.setNamedItem(tag_state);
+                        tag_node.onclick = function() {
+                            var states = ["unset", "include", "exclude", "unset"];
+                            var tag_state = tag_node.attributes["tag-state"];
+                            tag_state.value = states[states.indexOf(tag_state.value) + 1];
+                            
+                            for (list of [j99_settings[setting.id].whitelist, j99_settings[setting.id].blacklist])
+                            {
+                                var i = list.indexOf(tag.value);
+                                if (i >= 0)
+                                {
+                                    list = list.splice(i, 1);
+                                }
+                            }
+                            if (tag_state.value === "include")
+                                j99_settings[setting.id].whitelist.push(tag.id);
+                            if (tag_state.value === "exclude")
+                                j99_settings[setting.id].blacklist.push(tag.id);
+                            setting.update(tag);
+                        };
+                        container.appendChild(tag_node);
+                    })(setting, tag);
+            break;
         }
     }
 
@@ -352,6 +412,27 @@
                 setting.update(value);
         }
     };
+
+    window.updateBackground = function() {
+        if (j99_settings.bgisrandom)
+        {
+            while (true)
+            {
+                var i = Math.floor(Math.random() * j99_backgrounds.length);
+                var bg = j99_backgrounds[i];
+                for (whitelisted_tag of j99_settings.bgtags.whitelist)
+                    if (!bg.tags.includes(whitelisted_tag))
+                        continue;
+                for (blacklisted_tag of j99_settings.bgtags.blacklist)
+                    if (bg.tags.includes(blacklisted_tag))
+                        continue;
+                document.documentElement.style.setProperty('--theme-background', `url("assets/bg/${bg.filename}")`);
+                break;
+            }
+        }
+    }
+
+    updateBackground();
 })();
 
 function showSetting(setting_id)

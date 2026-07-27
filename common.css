@@ -70,6 +70,11 @@ main {
     border-left: rgb(var(--theme-text-colour)) solid 1px;
 }
 
+.enable-colour-transitions .dropdown-button::after {
+    transition-property: border-color, color;
+    transition-duration: 0.5s;
+}
+
 .dropdown .dropdown-options {
     display: none;
     position: absolute;
@@ -82,7 +87,7 @@ main {
 }
 
 .enable-colour-transitions .dropdown-button, .enable-colour-transitions .dropdown-options {
-    transition-property: background-color;
+    transition-property: background-color, border-color;
     transition-duration: 0.5s;
 }
 
@@ -116,6 +121,35 @@ main {
     width: 100%;
 }
 
+
+/* Tag filter */
+.tag-filter {
+    border: rgb(var(--theme-text-colour)) solid 1px;
+    --vertical-padding: 0.25em;
+    --horizontal-padding: 0.5em;
+    padding-left: var(--horizontal-padding);
+    padding-right: var(--horizontal-padding);
+    padding-top: var(--vertical-padding);
+    padding-bottom: var(--vertical-padding);
+    margin-bottom: 0.25em;
+    cursor: pointer;
+    transition-property: background-color;
+    transition-duration: 0.5s;
+    transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.enable-colour-transitions .tag-filter {
+    transition-property: color, border-color, background-color;
+    transition-timing-function: ease, ease, cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.tag-filter[tag-state=include] {
+    background: #5bdd5bc7;
+}
+
+.tag-filter[tag-state=exclude] {
+    background: #dd5b5bc7;
+}
 
 /* Settings menu */
 #settings-button {
