@@ -43,22 +43,30 @@ window.loadPage = async function(path, updateURL, updateHistory)
         switch (s)
         {
             case "head":
-                var head_children = document.head.children.length;
-                document.head.innerHTML = section + document.head.innerHTML;
-                for (var i = 0; i < (document.head.children.length - head_children); i++)
-                    document.head.children[i].classList.add("subpage-node");
+                var section_parsed = parser.parseFromString(`<!Doctype HTML><html><head>${section}</head><body></body></html>`, 'text/html');
+                var section_end = document.head.firstChild;
+                for (child of section_parsed.head.children)
+                {
+                    child.classList.add("subpage-node");
+                    document.head.insertBefore(child, section_end);
+                }
             break;
             case "body":
-                var body_children = document.body.children.length;
-                document.body.innerHTML = section + document.body.innerHTML;
-                for (var i = 0; i < (document.body.children.length - body_children); i++)
-                    document.body.children[i].classList.add("subpage-node");
+                var section_parsed = parser.parseFromString(`<!Doctype HTML><html><head></head><body>${section}</body></html>`, 'text/html');
+                var section_end = document.body.firstChild;
+                for (child of section_parsed.body.children)
+                {
+                    child.classList.add("subpage-node");
+                    document.body.insertBefore(child, section_end);
+                }
             break;
             case "body-end":
-                var body_children = document.body.children.length;
-                document.body.innerHTML = document.body.innerHTML + section;
-                for (var i = body_children; i < document.body.children.length; i++)
-                    document.body.children[i].classList.add("subpage-node");
+                var section_parsed = parser.parseFromString(`<!Doctype HTML><html><head></head><body>${section}</body></html>`, 'text/html');
+                for (child of section_parsed.body.children)
+                {
+                    child.classList.add("subpage-node");
+                    document.body.appendChild(child);
+                }
             break;
             case "main":
                 document.getElementById("subpage-main").innerHTML = section;
