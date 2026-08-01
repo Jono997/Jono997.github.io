@@ -79,6 +79,10 @@ window.loadPage = async function(path, updateURL, updateHistory)
         history.pushState(prev_path, "", prev_path);
     if (updateURL)
         history.replaceState(path, "", path);
+
+    // Update background if required
+    if (j99_settings.bgisrandom && j99_settings.bgrandomperpage)
+        updateBackground();
 };
 
 (function() {
