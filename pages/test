@@ -1,0 +1,8 @@
+[head]
+<title>Test page</title>
+[body]
+<a href="javascript:loadPage('/', true, true)">Return to the main page</a>
+[body-end]
+<span>Body end element</span>
+[main]
+Stuff, things, etc.

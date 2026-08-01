@@ -1,0 +1,5 @@
+[head]
+<title>Main page - Jono99</title>
+[main]
+<h1>Hello!</h1>
+<button onclick="loadPage('test', true, true)">Load test page</button>

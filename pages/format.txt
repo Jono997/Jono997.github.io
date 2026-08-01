@@ -1,0 +1,9 @@
+subpages (pages stored in this directory) are formatted into sections, each section starting with a heading.
+The heading is formatted as such: "[section_name]". A heading must be at the start of a line with no indenting.
+All lines after a heading are counted as being part of that section until the next heading or the end of the file is reached.
+Sections will be parsed and inserted into the page differently depending on their section name.
+
+head: Contents will be inserted to the start of the page's head element.
+main: Contents will replace the contents of the page's main element's innerHTML.
+body: Contents will be inserted to the start of the page's body element.
+body-end: Contents will be inserted to the end of the page's body element.
