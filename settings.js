@@ -151,7 +151,7 @@
         bg_list.push({
             name: bg.name,
             value: i,
-            html: `<div class="background-dropdown"><div class="background-thumbnail" style="background-image: url(assets/bg/${bg.filename});"></div><div class="background-label">${bg.name}</div></div>`,
+            html: `<div class="background-dropdown"><div class="background-thumbnail" style="background-image: url(assets/bg/${bg.filename});"></div><div class="background-label"><div style="text-align: center;">${bg.name}</div><hr /><div style="text-align: center;">${bg.artist}</div></div></div>`,
         });
         for (tag of bg.tags)
             if (!tag_list.includes(tag))
