@@ -81,7 +81,7 @@ window.loadPage = async function(path, updateURL, updateHistory)
         history.replaceState(path, "", path);
 
     // Update background if required
-    if (j99_settings.bgisrandom && j99_settings.bgrandomperpage)
+    if (Object.hasOwn(window, "j99_settings") && j99_settings.bgisrandom && j99_settings.bgrandomperpage)
         updateBackground();
 };
 
